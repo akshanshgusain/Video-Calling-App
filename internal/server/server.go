@@ -8,17 +8,15 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html"
 	"github.com/gofiber/websocket/v2"
+	"os"
 	"time"
 )
 
 var (
-	addr = flag.String("addr, ": "", os.Getenv(
-"PORT"
-), "")
-cert = flag.String("cert", "", "")
-key = flag.String("key", "", "")
+	addr = flag.String("addr", os.Getenv("PORT"), "")
+	cert = flag.String("cert", "", "")
+	key  = flag.String("key", "", "")
 )
-
 
 func Run() error {
 	flag.Parse()
@@ -46,9 +44,9 @@ func Run() error {
 	}))
 	app.Get("/room/:uuid/chat", handlers.RoomChat)
 	app.Get("/room/:uuid/chat/websocket", websocket.New(handlers.RoomChatWebsocket))
-	app.Get("/room/:uuid/viewer/websocket", websocket.New(handlers.RoomViewerWebsocket))
+	app.Get("/room/uuid/viewer/websocket", websocket.New(handlers.RoomViewerWebsocket))
 	app.Get("/stream/:ssuid", handlers.Stram)
-	app.Get("/stream/:ssuid/websocket", )
-	app.Get("/stream/ssuid/chat/websocket", )
-	app.Get("/stream/:ssuid/viewer/websocket", )
+	app.Get("/stream/:ssuid/websocket")
+	app.Get("/stream/ssuid/chat/websocket")
+	app.Get("/stream/:ssuid/viewer/websocket")
 }

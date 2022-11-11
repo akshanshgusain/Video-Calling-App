@@ -20,6 +20,7 @@ func RoomWebsocket(c *websocket.Conn) {
 	_, _, room := createOrGetRoom(uuid)
 
 	// TODO: finish later
+
 }
 
 func Room(c *fiber.Ctx) error {
@@ -32,6 +33,7 @@ func Room(c *fiber.Ctx) error {
 	uuid, suuid, _ := createOrGetRoom(uuid)
 
 	// TODO: finish later
+
 }
 
 func createOrGetRoom(uuid string) (string, string, Room) {
