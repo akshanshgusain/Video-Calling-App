@@ -3,6 +3,7 @@ package server
 import (
 	"flag"
 	"github.com/akshanshgusain/Video-Calling-App/internal/handlers"
+	w "github.com/akshanshgusain/Video-Calling-App/pkg/webrtc"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -10,11 +11,10 @@ import (
 	"github.com/gofiber/websocket/v2"
 	"os"
 	"time"
-	w "github.com/akshanshgusain/Video-Calling-App/pkg/webrtc"
 )
 
 var (
-	addr = flag.String("addr, ":"+ os.Getenv("PORT"), "")
+	addr = flag.String("addr ", ":"+os.Getenv("PORT"), "")
 	cert = flag.String("cert", "", "")
 	key  = flag.String("key", "", "")
 )
@@ -51,7 +51,7 @@ func Run() error {
 		HandshakeTimeout: 10 * time.Second,
 	}))
 	app.Get("/stream/ssuid/chat/websocket", websocket.New(handlers.StreamChatWebsocket))
-	app.Get("/stream/:ssuid/viewer/websocket",  websocket.New(handlers.StreamViewerWebsocket))
+	app.Get("/stream/:ssuid/viewer/websocket", websocket.New(handlers.StreamViewerWebsocket))
 	app.Static("/", "./assets")
 
 	w.Rooms = make(map[string]*w.Room)
@@ -59,17 +59,17 @@ func Run() error {
 
 	go dispatchKeyFrames()
 
-	if *cert != ""{
+	if *cert != "" {
 		return app.ListenTLS(*add, *cert, *key)
-	}else{
+	} else {
 		return app.Listen(*add)
 	}
 
 }
 
-func dispatchKeyFrames(){
-	for range time.NewTicker(time.Second * 3).C{
-		for _, room := range w.Rooms{
+func dispatchKeyFrames() {
+	for range time.NewTicker(time.Second * 3).C {
+		for _, room := range w.Rooms {
 			room.Peers.DispatchKeyFrame()
 		}
 	}
