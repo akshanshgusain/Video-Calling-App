@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"github.com/akshanshgusain/Video-Calling-App/internal/server"
+	"log"
+)
 
 func main() {
-	fmt.Println("Hi there!")
+	if err := server.Run(); err != nil {
+		log.Fatal(err.Error())
+	}
 }
