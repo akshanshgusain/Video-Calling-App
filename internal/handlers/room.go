@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	w "github.com/akshanshgusain/Video-Calling-App/pkg/webrtc"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 	guuid "github.com/google/uuid"
@@ -36,6 +37,19 @@ func Room(c *fiber.Ctx) error {
 
 }
 
-func createOrGetRoom(uuid string) (string, string, Room) {
+func createOrGetRoom(uuid string) (string, string, *w.Room) {
 
+}
+
+func RoomViewerWebSocket(c *websocket.Conn) {
+
+}
+
+func RoomViewerConn(c *websocket.Conn, p *w.Peers) {
+
+}
+
+type WebsocketMessage struct {
+	Event string `json:"event"`
+	Data  string `json:"data"`
 }
