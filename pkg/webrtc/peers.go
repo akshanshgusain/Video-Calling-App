@@ -34,7 +34,13 @@ func (p *Peers) AddTrack(t *webrtc.TrackRemote) *webrtc.TrackLocalStaticRTP {
 }
 
 func (p *Peers) RemoveTrack(t *webrtc.TrackLocalStaticRTP) {
+	p.ListLock.Lock()
+	defer func() {
+		p.ListLock.Unlock()
+		p.SignalPeerConnections()
+	}()
 
+	delete(p.TrackLocals, t.ID())
 }
 
 func (p *Peers) SignalPeerConnections() {
