@@ -2,6 +2,7 @@ package webrtc
 
 import (
 	"github.com/gofiber/websocket/v2"
+	"log"
 	"sync"
 )
 
@@ -17,14 +18,26 @@ type PeerConnectionState struct {
 }
 
 func (p *Peers) AddTrack(t *webrtc.TrackRemote) *webrtc.TrackLocalStaticRTP {
+	p.ListLock.Lock()
+	defer func() {
+		p.ListLock.Unlock()
+		p.SignalPeerConnections()
+	}()
 
+	trackLocal, err := webrtc.NewTrackLocalStaticRTP(t.Codec().RTPCodecCapability, t.ID(), t.StramID())
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+	p.TrackLocals[t.ID()] = trackLocal
+	return trackLocal
 }
 
 func (p *Peers) RemoveTrack(t *webrtc.TrackLocalStaticRTP) {
 
 }
 
-func (p *Peers) SignalPeerConnection() {
+func (p *Peers) SignalPeerConnections() {
 
 }
 
