@@ -70,7 +70,12 @@ func StreamViewWebsocket(c *websocket.Conn) {
 func viewerConn(c *websocket.Conn, p *w.Peers) {
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
-	defer c.Close()
+	defer func(c *websocket.Conn) {
+		err := c.Close()
+		if err != nil {
+
+		}
+	}(c)
 
 	for {
 		select {
