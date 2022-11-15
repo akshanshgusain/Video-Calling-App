@@ -21,6 +21,12 @@ type ThreadSafeWriter struct {
 	Mutex sync.Mutex
 }
 
+func (t *ThreadSafeWriter) WriteJSON(v interface{}) error {
+	t.Mutex.Lock()
+	defer t.Mutex.Unlock()
+	return t.Conn.WriteJSON(v)
+}
+
 func (p *Peers) DispatchKeyFrame() {
 
 }
