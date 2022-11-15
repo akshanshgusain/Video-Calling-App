@@ -42,3 +42,8 @@ func (t *ThreadSafeWriter) WriteJSON(v interface{}) error {
 	defer t.Mutex.Unlock()
 	return t.Conn.WriteJSON(v)
 }
+
+type websocketMessage struct {
+	Event string `json:"event"`
+	Data  string `json:"data"`
+}
